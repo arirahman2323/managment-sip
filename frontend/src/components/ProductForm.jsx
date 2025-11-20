@@ -4,7 +4,7 @@ import { API_PATHS } from "../utils/apiPath";
 import AddCategory from "../pages/Admin/Product/AddCategory";
 import AddUnit from "../pages/Admin/Product/AddUnit";
 
-const ProductForm = ({ formData, onChange, onSubmit, onCancel }) => {
+const ProductForm = ({ formData, onChange, onSubmit, onCancel, isEdit }) => {
   const [categories, setCategories] = useState([]);
   const [units, setUnits] = useState([]);
   const [openCategoryModal, setOpenCategoryModal] = useState(false);
@@ -79,7 +79,7 @@ const ProductForm = ({ formData, onChange, onSubmit, onCancel }) => {
         <div className="grid grid-cols-2 gap-2">
           <div className="flex flex-col">
             <label className="text-sm font-normal">Stok Barang</label>
-            <input type="number" name="stock" value={formData.stock || ""} onChange={onChange} className="bg-gray-50 text-gray-500 text-sm p-3 rounded-lg focus:outline-gray-500" placeholder="0" required />
+            <input type="number" name="stock" value={formData.stock || ""} onChange={onChange} className="bg-gray-50 text-gray-500 text-sm p-3 rounded-lg focus:outline-gray-500" placeholder="0" required disabled={isEdit} />
           </div>
           <div className="flex flex-col">
             <label className="text-sm font-normal">Harga Beli</label>
@@ -120,6 +120,11 @@ const ProductForm = ({ formData, onChange, onSubmit, onCancel }) => {
             <label className="text-sm font-normal">Profit</label>
             <input value={`Rp. ${formatRupiah(profit)}`} readOnly className="bg-gray-50 text-gray-500 text-sm p-3 rounded-lg focus:outline-gray-500" required />
           </div>
+        </div>
+
+        <div className="flex flex-col">
+          <label className="text-sm font-normal">Stok Minimal</label>
+          <input type="number" name="min_stock" value={formData.min_stock || ""} onChange={onChange} className="bg-gray-50 text-gray-500 text-sm p-3 rounded-lg focus:outline-gray-500" placeholder="0" required />
         </div>
 
         {/* <div className="flex flex-col">

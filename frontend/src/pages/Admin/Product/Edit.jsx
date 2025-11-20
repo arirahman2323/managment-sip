@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import ProductForm from "../../../components/ProductForm";
 import axiosInstance from "../../../utils/axiosInstance";
 import { API_PATHS } from "../../../utils/apiPath";
+import toast from "react-hot-toast";
 
-const Edit = ({ isOpen, onClose, productData }) => {
+const Edit = ({ isOpen, onClose, productData, isEdit }) => {
   const [formData, setFormData] = useState(productData || {});
 
   useEffect(() => {
@@ -22,11 +23,11 @@ const Edit = ({ isOpen, onClose, productData }) => {
     e.preventDefault();
     try {
       await axiosInstance.put(API_PATHS.PRODUCT.UPDATE_PRODUCT(productData.id), formData);
-      alert("Produk berhasil diubah!");
+      toast.success("Produk berhasil diubah!");
       onClose();
     } catch (err) {
-      console.error("Gagal mengubah produk:", err);
-      alert("Gagal mengubah produk.");
+      console.error(err);
+      toast.error("Gagal mengubah produk.");
     }
   };
 
@@ -41,7 +42,7 @@ const Edit = ({ isOpen, onClose, productData }) => {
             ×
           </button>
         </div>
-        <ProductForm formData={formData} onChange={handleChange} onSubmit={handleSubmit} onCancel={onClose} />
+        <ProductForm formData={formData} onChange={handleChange} onSubmit={handleSubmit} onCancel={onClose} isEdit={isEdit} />
       </div>
     </div>
   );

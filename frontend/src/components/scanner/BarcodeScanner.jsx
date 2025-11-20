@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Quagga from "quagga";
 import { XMarkIcon } from "@heroicons/react/24/solid";
+import toast from "react-hot-toast";
 
 const BarcodeScanner = ({ isOpen, onClose, onScan }) => {
   const scannerRef = useRef(null);
@@ -54,8 +55,9 @@ const BarcodeScanner = ({ isOpen, onClose, onScan }) => {
         },
         (err) => {
           if (err) {
-            console.error("Gagal menginisialisasi Quagga:", err);
-            alert("Gagal mengakses kamera. Pastikan izin telah diberikan dan tidak ada aplikasi lain yang menggunakan kamera.");
+            console.error(err);
+            // console.error("Gagal menginisialisasi Quagga:", err);
+            toast.error("Gagal mengakses kamera. Pastikan izin telah diberikan dan tidak ada aplikasi lain yang menggunakan kamera.");
             return;
           }
           Quagga.start();

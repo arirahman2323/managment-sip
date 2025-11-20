@@ -12,6 +12,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { setNotifications } = useContext(NotificationContext);
+  const [isError, setIsError] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -34,9 +35,10 @@ const Login = () => {
       toast.success("Login berhasil!");
       navigate("/dashboard");
     } catch (error) {
-      toast.error("Email atau password salah!");
       console.error("Login failed:", error);
-      navigate("/");
+      setIsError(true);
+      toast.error("Email atau password salah!",{duration: 5000});
+      // navigate("/");
     }
   };
   return (
@@ -49,6 +51,11 @@ const Login = () => {
         </div>
 
         <form className="mt-8 space-y-6" onSubmit={handleLogin}>
+          {isError && (
+            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded text-sm text-center">
+              Email atau password yang Anda masukkan salah.
+            </div>
+          )}
           <div className="flex flex-col gap-4">
             <div>
               <label htmlFor="email-address" className="sr-only">
@@ -60,8 +67,12 @@ const Login = () => {
                 type="email"
                 required
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm shadow-sm"
+                onChange={(e) => {setEmail(e.target.value);setIsError(false);}}
+                className={`relative block w-full appearance-none rounded-md border px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:outline-none sm:text-sm shadow-sm
+                  ${isError 
+                    ? "border-red-500 focus:border-red-500 focus:ring-red-500" 
+                    : "border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                  }`}
                 placeholder="Email"
               />
             </div>
@@ -75,10 +86,19 @@ const Login = () => {
                 type="password"
                 required
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm shadow-sm"
+                onChange={(e) => {setPassword(e.target.value);setIsError(false);}}
+                className={`relative block w-full appearance-none rounded-md border px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:outline-none sm:text-sm shadow-sm
+                  ${isError 
+                    ? "border-red-500 focus:border-red-500 focus:ring-red-500" 
+                    : "border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                  }`}
                 placeholder="Password"
               />
+              {isError && (
+                 <p className="text-xs text-red-500 mt-1 ml-1">
+                   *Salah input email/password
+                 </p>
+               )}
             </div>
           </div>
 

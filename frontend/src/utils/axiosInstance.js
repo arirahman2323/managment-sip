@@ -27,9 +27,14 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     if (error.response) {
-      if (error.response.status === 401) {
-        window.location.href = "/";
-      } else if (error.response.status === 500) {
+      const status = error.response.status;
+      const token = localStorage.getItem("token");
+      if (status === 401) {
+        if (token) {
+          localStorage.removeItem("token");
+          window.location.href = "/";
+        }
+      } else if (status === 500) {
         console.error("Server error. Please try again later.");
       }
     } else if (error.code === "ECONNABORTED") {

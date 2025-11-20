@@ -134,6 +134,7 @@ const Index = () => {
           fetchProducts();
         }}
         productData={editingProduct}
+        isEdit={true}
       />
     </div>
   );
